@@ -14,6 +14,12 @@ green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
 snake_spd = 10
 
+# Fruit position
+fruit_pos = [random.randrange(0, (window_x//10)) * 10,
+             random.randrange(0, (window_y//10)) * 10]
+
+fruit_spawn = True
+
 # Initialize game
 
 pygame.init()
@@ -42,3 +48,28 @@ while game_running:
 
     pygame.display.update()
     fps.tick(snake_spd)
+
+    # Fruit Spawn
+
+    if not fruit_spawn:
+        fruit_pos = [random.randrange(0, (window_x//10)) * 10,
+                     random.randrange(0, (window_y//10)) * 10]
+        
+        if fruit_pos in snake_body:
+            fruit_spawn = False
+        
+    fruit_spawn = True
+    game_window.fill(black)
+
+    pygame.draw.rect(game_window, red, pygame.Rect(fruit_pos[0], fruit_pos[1], 10, 10))
+
+
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F2:
+                game_running = False
+
+
