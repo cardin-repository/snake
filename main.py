@@ -12,7 +12,10 @@ white = pygame.Color(255, 255, 255)
 red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
+dark_green = pygame.Color(0, 100, 0)
 snake_spd = 10
+snake_direction = 'RIGHT'
+
 
 # Initialize game
 
@@ -37,8 +40,32 @@ snake_body = [  [100, 50],
 # main function
 
 while game_running:
-    for pos in snake_body:
-        pygame.draw.rect(game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F2:
+                game_running = False
+
+    
+    #setting snake default to right by default for testing
+    if snake_direction == 'RIGHT':
+        snake_pos[0] += 10
+
+    #update snake positioning and deleted
+    snake_body.insert(0, list(snake_pos))
+    snake_body.pop()
+
+    #update screen before redrawing snake
+    game_window.fill(black)
+
+    for pos in snake_body:
+        pygame.draw.rect(game_window, dark_green, pygame.Rect(pos[0], pos[1], 12, 12))
+        pygame.draw.rect(game_window, green, pygame.Rect(pos[0] + 1, pos[1] + 1, 10, 10))
+
+    
     pygame.display.update()
+    #print current positions of the snake body
+    print(snake_body)
     fps.tick(snake_spd)
